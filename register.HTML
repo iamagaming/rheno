@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height of the viewport */
+            margin: 0;
+            background-color: #f0f0f0; /* Optional: Set background color */
+        }
+        .form-container {
+            background: white; /* Optional: Set background color for form */
+            padding: 20px;
+            border-radius: 8px; /* Optional: Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Shadow effect */
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px; /* Space between label and input */
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 15px; /* Space between inputs */
+            border: 1px solid #ccc; /* Optional: Border styling */
+            border-radius: 4px; /* Optional: Rounded corners for inputs */
+        }
+        button {
+            padding: 10px;
+            background-color: #007bff; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            border-radius: 4px; /* Rounded corners for button */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Register</h2>
+    <form id="regForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Masukkan username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Masukkan password" required>
+        <label for="confirmPassword">Konfirmasi Password:</label>
+        <input type="password" id="confirmPassword" placeholder="Konfirmasi password" required>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<script>
+    const regForm = document.getElementById('regForm');
+
+    regForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('Password tidak cocok, coba lagi.');
+            return;
+        }
+
+        // Simpan username dan password di localStorage
+        localStorage.setItem('registeredUsername', username);
+        localStorage.setItem('registeredPassword', password);
+
+        alert('Register berhasil! Silakan login.');
+        regForm.reset();
+
+        // Redirect ke halaman login
+        window.location.href = 'formdaninput.html';
+    });
+</script>
+
+</body>
+</html>

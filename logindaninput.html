@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Input Data</title>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .output-container {
+            margin-top: 20px;
+        }
+        #userDataForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Form -->
+<div class="form-container" id="loginForm">
+    <h2>Login</h2>
+    <form id="logForm">
+        <label for="logUsername">Username:</label>
+        <input type="text" id="logUsername" required><br><br>
+        <label for="logPassword">Password:</label>
+        <input type="password" id="logPassword" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<!-- User Data Form -->
+<div class="form-container" id="userDataForm">
+    <h2>Welcome, <span id="loggedInUser"></span></h2>
+    <form id="inputForm">
+        <label for="nama">Nama:</label>
+        <input type="text" id="nama" required><br><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" required>
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+        </select><br><br>
+        <label for="pertanyaan">Pertanyaan:</label>
+        <textarea id="pertanyaan" rows="5" cols="20" required></textarea><br><br>
+        <button type="submit">Simpan Data</button>
+    </form>
+
+    <h3>Data yang Dimasukkan:</h3>
+    <p id="outputNama">Nama: -</p>
+    <p id="outputGender">Gender: -</p>
+    <p id="outputPertanyaan">Pertanyaan: -</p>
+</div>
+
+<script>
+    const logForm = document.getElementById('logForm');
+    const inputForm = document.getElementById('inputForm');
+    const userDataForm = document.getElementById('userDataForm');
+    const loggedInUser = document.getElementById('loggedInUser');
+
+    // Fungsi untuk login user
+    logForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('logUsername').value;
+        const password = document.getElementById('logPassword').value;
+
+        // Ambil user dan password dari localStorage
+        const savedUsername = localStorage.getItem('username');
+        const savedPassword = localStorage.getItem('password');
+
+        // Validasi login
+        if (username === savedUsername && password === savedPassword) {
+            alert('Login berhasil!');
+            loggedInUser.textContent = username;
+            logForm.reset();
+            document.getElementById('loginForm').style.display = 'none';
+            userDataForm.style.display = 'block';
+        } else {
+            alert('Username atau password salah!');
+        }
+    });
+
+    // Fungsi untuk menyimpan data input user
+    inputForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const nama = document.getElementById('nama').value;
+        const gender = document.getElementById('gender').value;
+        const pertanyaan = document.getElementById('pertanyaan').value;
+
+        // Simpan data input ke localStorage
+        localStorage.setItem('namaUser', nama);
+        localStorage.setItem('genderUser', gender);
+        localStorage.setItem('pertanyaanUser', pertanyaan);
+
+        // Tampilkan hasil input
+        document.getElementById('outputNama').textContent = `Nama: ${nama}`;
+        document.getElementById('outputGender').textContent = `Gender: ${gender === 'L' ? 'Laki-laki' : 'Perempuan'}`;
+        document.getElementById('outputPertanyaan').textContent = `Pertanyaan: ${pertanyaan}`;
+
+        inputForm.reset();
+    });
+
+    // Cek apakah user sudah login saat halaman di-refresh
+    window.onload = function() {
+        const savedUsername = localStorage.getItem('username');
+        const savedPassword = localStorage.getItem('password');
+        if (savedUsername && savedPassword) {
+            loggedInUser.textContent = savedUsername;
+        }
+    }
+</script>
+
+</body>
+</html>
+

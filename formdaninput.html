@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .output-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="inputForm">
+            <p>Nama :<input type="text" placeholder="Silahkan di isi" name="nama" id="nama" required />
+                <input type="radio" name="gender" value="L" id="genderL" required /> Laki-laki
+                <input type="radio" name="gender" value="P" id="genderP" required /> Perempuan
+            </p>
+            <p>
+                Program Studi :
+                <select name="progdi" id="progdi" required>
+                    <option value="ti">Teknik Informatika</option>
+                    <option value="si">Sistem Informasi</option>
+                    <option value="dkv">Desain Komunikasi Visual</option>
+                </select>
+            </p>
+            <p>
+                Pertanyaan :
+                <textarea rows="5" cols="20" placeholder="silahkan isi" name="pertanyaan" id="pertanyaan" required></textarea>
+            </p>
+            <p>
+                <input type="checkbox" name="konfirmasi" id="konfirmasi" checked required />
+                Saya setuju dengan ketentuan yang berlaku
+            </p>
+            <button type="submit">Simpan</button>
+        </form>
+    </div>
+
+    <div class="output-container">
+        <h2>Data Input</h2>
+        <p id="outputNama">Nama: -</p>
+        <p id="outputGender">Gender: -</p>
+        <p id="outputProgdi">Program Studi: -</p>
+        <p id="outputPertanyaan">Pertanyaan: -</p>
+    </div>
+
+    <script>
+        const form = document.getElementById('inputForm');
+        const outputNama = document.getElementById('outputNama');
+        const outputGender = document.getElementById('outputGender');
+        const outputProgdi = document.getElementById('outputProgdi');
+        const outputPertanyaan = document.getElementById('outputPertanyaan');
+
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveData() {
+            const nama = document.getElementById('nama').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const progdi = document.getElementById('progdi').value;
+            const pertanyaan = document.getElementById('pertanyaan').value;
+            const konfirmasi = document.getElementById('konfirmasi').checked;
+
+            if (!konfirmasi) {
+                alert('Anda harus menyetujui ketentuan yang berlaku!');
+                return;
+            }
+
+            // Simpan data ke localStorage
+            localStorage.setItem('nama', nama);
+            localStorage.setItem('gender', gender);
+            localStorage.setItem('progdi', progdi);
+            localStorage.setItem('pertanyaan', pertanyaan);
+        }
+
+        // Fungsi untuk menampilkan data yang tersimpan
+        function displayData() {
+            const savedNama = localStorage.getItem('nama') || '-';
+            const savedGender = localStorage.getItem('gender') || '-';
+            const savedProgdi = localStorage.getItem('progdi') || '-';
+            const savedPertanyaan = localStorage.getItem('pertanyaan') || '-';
+
+            outputNama.textContent = `Nama: ${savedNama}`;
+            outputGender.textContent = `Gender: ${savedGender === 'L' ? 'Laki-laki' : 'Perempuan'}`;
+            outputProgdi.textContent = `Program Studi: ${savedProgdi}`;
+            outputPertanyaan.textContent = `Pertanyaan: ${savedPertanyaan}`;
+        }
+
+        // Event listener saat form disubmit
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Cegah form dari reload halaman
+            saveData(); // Simpan data
+            displayData(); // Tampilkan data
+            form.reset(); // Reset form setelah submit
+        });
+
+        // Tampilkan data yang tersimpan saat halaman dimuat
+        window.onload = function() {
+            displayData();
+        }
+    </script>
+</body>
+</html>
